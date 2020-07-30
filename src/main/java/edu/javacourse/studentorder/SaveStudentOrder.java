@@ -10,7 +10,7 @@ import java.util.List;
 public class SaveStudentOrder
 {
     public static void main(String[] args) throws Exception {
-        List<Street> d = new DictionaryDaoImpl().findStreet("sec");
+        List<Street> d = new DictionaryDaoImpl().findStreet("d");
         for (Street street : d) {
             System.out.println(street.getStreetName());
         }
