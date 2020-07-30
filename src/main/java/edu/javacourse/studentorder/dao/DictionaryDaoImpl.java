@@ -13,10 +13,9 @@ public class DictionaryDaoImpl implements DictionaryDao {
             "FROM jc_street WHERE UPPER(street_name) LIKE UPPER(?)";
 
     private Connection getConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(
+        return DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/jc_student",
                 "postgres", "postgres");
-        return connection;
     }
 
     public List<Street> findStreet(String pattern) throws DaoException {
@@ -24,10 +23,11 @@ public class DictionaryDaoImpl implements DictionaryDao {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_STREET)) {
             statement.setString(1, "%" + pattern + "%");
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                result.add(new Street(resultSet.getLong("street_code"),
-                        resultSet.getString("street_name")));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(new Street(resultSet.getLong("street_code"),
+                            resultSet.getString("street_name")));
+                }
             }
         } catch (SQLException e) {
             throw new DaoException(e);
