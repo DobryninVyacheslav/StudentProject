@@ -22,6 +22,26 @@ public class SaveStudentOrder
         for (RegisterOffice r : ro) {
             System.out.println(r.getOfficeName());
         }
+
+        List<CountryArea> ca1 = new DictionaryDaoImpl().findAreas("");
+        for (CountryArea ca : ca1) {
+            System.out.println(ca.getAreaId() + ":" +ca.getAreaName());
+        }
+        System.out.println("--->");
+        List<CountryArea> ca2 = new DictionaryDaoImpl().findAreas("020000000000");
+        for (CountryArea ca : ca2) {
+            System.out.println(ca.getAreaId() + ":" +ca.getAreaName());
+        }
+        System.out.println("--->");
+        List<CountryArea> ca3 = new DictionaryDaoImpl().findAreas("020010000000");
+        for (CountryArea ca : ca3) {
+            System.out.println(ca.getAreaId() + ":" +ca.getAreaName());
+        }
+        System.out.println("--->");
+        List<CountryArea> ca4 = new DictionaryDaoImpl().findAreas("020010010000");
+        for (CountryArea ca : ca4) {
+            System.out.println(ca.getAreaId() + ":" +ca.getAreaName());
+        }
 //        StudentOrder s = buildStudentOrder(10);
 //        StudentOrder so = new StudentOrder();
 //        long ans = saveStudentOrder(so);
