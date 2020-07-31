@@ -1,6 +1,8 @@
 package edu.javacourse.studentorder.dao;
 
 import edu.javacourse.studentorder.config.Config;
+import edu.javacourse.studentorder.domain.PassportOffice;
+import edu.javacourse.studentorder.domain.RegisterOffice;
 import edu.javacourse.studentorder.domain.Street;
 import edu.javacourse.studentorder.exception.DaoException;
 
@@ -12,6 +14,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     private  static final String GET_STREET = "SELECT street_code, street_name " +
             "FROM jc_street WHERE UPPER(street_name) LIKE UPPER(?)";
+    private  static final String GET_PASSPORT = "SELECT * " +
+            "FROM jc_passport_office WHERE p_office_area_id = ?";
+    private  static final String GET_REGISTER = "SELECT * " +
+            "FROM jc_register_office WHERE r_office_area_id = ?";
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
@@ -29,6 +35,46 @@ public class DictionaryDaoImpl implements DictionaryDao {
                 while (resultSet.next()) {
                     result.add(new Street(resultSet.getLong("street_code"),
                             resultSet.getString("street_name")));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return result;
+    }
+
+    @Override
+    public List<PassportOffice> findPassportOffices(String areaId) throws DaoException {
+        List<PassportOffice> result = new LinkedList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_PASSPORT)) {
+            statement.setString(1, areaId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(new PassportOffice(
+                            resultSet.getLong("p_office_id"),
+                            resultSet.getString("p_office_area_id"),
+                            resultSet.getString("p_office_name")));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return result;
+    }
+
+    @Override
+    public List<RegisterOffice> findRegisterOffices(String areaId) throws DaoException {
+        List<RegisterOffice> result = new LinkedList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_REGISTER)) {
+            statement.setString(1, areaId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(new RegisterOffice(
+                            resultSet.getLong("r_office_id"),
+                            resultSet.getString("r_office_area_id"),
+                            resultSet.getString("r_office_name")));
                 }
             }
         } catch (SQLException e) {
