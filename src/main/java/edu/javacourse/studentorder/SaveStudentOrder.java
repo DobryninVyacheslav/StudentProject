@@ -46,9 +46,10 @@ public class SaveStudentOrder
 //        }
         StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-        for (int i = 0; i < 1; i++) {
-            Long id = dao.saveStudentOrder(s);
-            System.out.println(id);
+        Long id = dao.saveStudentOrder(s);
+        List<StudentOrder> soList = dao.getStudentOrders();
+        for (StudentOrder studentOrder : soList) {
+            System.out.println(studentOrder.getStudentOrderId());
         }
 //        StudentOrder so = new StudentOrder();
 //        long ans = saveStudentOrder(so);
@@ -95,7 +96,7 @@ public class SaveStudentOrder
         wife.setStudentId("" + (200000 + id));
         wife.setAddress(address);
         wife.setUniversity(new University(1L, ""));
-        wife.setStudentId("WW12345child");
+        wife.setStudentId("WW12345");
         // Ребенок
         Child child1 = new Child("Петрова", "Ирина", "Викторовна", LocalDate.of(2018, 6, 29));
         child1.setCertificateNumber("" + (300000 + id));
