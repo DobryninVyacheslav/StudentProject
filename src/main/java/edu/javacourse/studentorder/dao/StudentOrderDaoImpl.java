@@ -44,25 +44,35 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
              PreparedStatement stmt = connection
                      .prepareStatement(INSERT_ORDER, new String[]{"student_order_id"})) {
 
-            stmt.setInt(1, StudentOrderStatus.START.ordinal());
-            stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            connection.setAutoCommit(false);
+            try {
+                //Header
+                stmt.setInt(1, StudentOrderStatus.START.ordinal());
+                stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
 
-            setParamsForAdult(stmt, 3, so.getHusband());
-            setParamsForAdult(stmt, 16, so.getWife());
+                //Husband and wife
+                setParamsForAdult(stmt, 3, so.getHusband());
+                setParamsForAdult(stmt,  16, so.getWife());
 
-            stmt.setString(29, so.getMarriageCertificateId());
-            stmt.setLong(30, so.getMarriageOffice().getOfficeId());
-            stmt.setDate(31, Date.valueOf(so.getMarriageDate()));
+                //Marriage
+                stmt.setString(29, so.getMarriageCertificateId());
+                stmt.setLong(30, so.getMarriageOffice().getOfficeId());
+                stmt.setDate(31, Date.valueOf(so.getMarriageDate()));
 
-            stmt.executeUpdate();
-            ResultSet gkRs = stmt.getGeneratedKeys();
-            if (gkRs.next()) {
-                result = gkRs.getLong(1);
+                stmt.executeUpdate();
+                ResultSet gkRs = stmt.getGeneratedKeys();
+                if (gkRs.next()) {
+                    result = gkRs.getLong(1);
+                }
+                gkRs.close();
+
+                saveChildren(connection, so, result);
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
             }
-            gkRs.close();
-
-            saveChildren(connection, so, result);
-
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -74,8 +84,9 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             for (Child child: so.getChildren()) {
                 stmt.setLong(1, soId);
                 setParamsForChild(stmt, child);
-                stmt.executeUpdate();
+                stmt.addBatch();
             }
+            stmt.executeBatch();
         }
     }
 
