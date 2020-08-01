@@ -46,7 +46,7 @@ public class SaveStudentOrder
 //        }
         StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             Long id = dao.saveStudentOrder(s);
             System.out.println(id);
         }
@@ -95,7 +95,7 @@ public class SaveStudentOrder
         // Ребенок
         Child child1 = new Child("Петрова", "Ирина", "Викторовна", LocalDate.of(2018, 6, 29));
         child1.setCertificateNumber("" + (300000 + id));
-        child1.setIssueDate(LocalDate.of(2018, 7, 19));
+        child1.setIssueDate(LocalDate.of(2018, 6, 11));
         RegisterOffice ro2 = new RegisterOffice(2L,"","");
         child1.setIssueDepartment(ro2);
         child1.setAddress(address);
