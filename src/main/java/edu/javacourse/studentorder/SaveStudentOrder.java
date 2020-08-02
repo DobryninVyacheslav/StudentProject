@@ -44,9 +44,9 @@ public class SaveStudentOrder
 //        for (CountryArea ca : ca4) {
 //            System.out.println(ca.getAreaId() + ":" +ca.getAreaName());
 //        }
-        StudentOrder s = buildStudentOrder(10);
+//        StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-        Long id = dao.saveStudentOrder(s);
+//        Long id = dao.saveStudentOrder(s);
         List<StudentOrder> soList = dao.getStudentOrders();
         for (StudentOrder studentOrder : soList) {
             System.out.println(studentOrder.getStudentOrderId());
