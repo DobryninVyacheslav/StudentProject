@@ -33,7 +33,9 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     private static final String SELECT_ORDERS =
-            "SELECT * FROM jc_student_order WHERE student_order_status = 0 ORDER BY student_order_date";
+            "SELECT so.*, ro.r_office_area_id, ro.r_office_name FROM jc_student_order so " +
+            "INNER JOIN jc_register_office ro ON ro.r_office_id = so.register_office_id " +
+            "WHERE student_order_status = 0 ORDER BY student_order_date;";
 
     //TODO refactoring - make one method
     private Connection getConnection() throws SQLException {
@@ -85,6 +87,52 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
         return result;
     }
 
+    private void saveChildren(Connection connection, StudentOrder so, Long soId) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(INSERT_CHILD)) {
+            for (Child child: so.getChildren()) {
+                stmt.setLong(1, soId);
+                setParamsForChild(stmt, child);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        }
+    }
+
+    private void setParamsForAdult(PreparedStatement stmt, int start, Adult adult) throws SQLException {
+        setParamsForPerson(stmt, start, adult);
+        stmt.setString(start + 4, adult.getPassportSeria());
+        stmt.setString(start + 5, adult.getPassportNumber());
+        stmt.setDate(start + 6, Date.valueOf(adult.getIssueDate()));
+        stmt.setLong(start + 7, adult.getIssueDepartment().getOfficeId());
+        setParamsForAddress(stmt, start + 8, adult);
+        stmt.setLong(start + 13, adult.getUniversity().getUniversityId());
+        stmt.setString(start + 14, adult.getStudentId());
+    }
+
+    private void setParamsForChild(PreparedStatement stmt, Child child) throws SQLException {
+        setParamsForPerson(stmt, 2, child);
+        stmt.setString(6, child.getCertificateNumber());
+        stmt.setDate(7, Date.valueOf(child.getIssueDate()));
+        stmt.setLong(8, child.getIssueDepartment().getOfficeId());
+        setParamsForAddress(stmt, 9, child);
+    }
+
+    private void setParamsForPerson(PreparedStatement stmt, int start, Person person) throws SQLException {
+        stmt.setString(start, person.getSurName());
+        stmt.setString(start + 1, person.getGivenName());
+        stmt.setString(start + 2, person.getPatronymic());
+        stmt.setDate(start + 3, Date.valueOf(person.getDateOfBirth()));
+    }
+
+    private void setParamsForAddress(PreparedStatement stmt, int start, Person person) throws SQLException {
+        Address h_address = person.getAddress();
+        stmt.setString(start, h_address.getPostCode());
+        stmt.setLong(start + 1, h_address.getStreet().getStreetCode());
+        stmt.setString(start + 2, h_address.getBuilding());
+        stmt.setString(start + 3, h_address.getExtension());
+        stmt.setString(start + 4, h_address.getApartment());
+    }
+
     @Override
     public List<StudentOrder> getStudentOrders() throws DaoException {
         List<StudentOrder> result = new LinkedList<>();
@@ -104,7 +152,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             }
 
         } catch (SQLException e) {
-             throw new DaoException(e);
+            throw new DaoException(e);
         }
         return result;
     }
@@ -149,53 +197,9 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
         so.setMarriageDate(rs.getDate("marriage_date").toLocalDate());
 
         Long roId = rs.getLong("register_office_id");
-        RegisterOffice ro = new RegisterOffice(roId, "", "");
+        String areaId = rs.getString("r_office_area_id");
+        String name = rs.getString("r_office_name");
+        RegisterOffice ro = new RegisterOffice(roId, areaId, name);
         so.setMarriageOffice(ro);
-    }
-
-    private void saveChildren(Connection connection, StudentOrder so, Long soId) throws SQLException {
-        try (PreparedStatement stmt = connection.prepareStatement(INSERT_CHILD)) {
-            for (Child child: so.getChildren()) {
-                stmt.setLong(1, soId);
-                setParamsForChild(stmt, child);
-                stmt.addBatch();
-            }
-            stmt.executeBatch();
-        }
-    }
-
-    private void setParamsForChild(PreparedStatement stmt, Child child) throws SQLException {
-        setParamsForPerson(stmt, 2, child);
-        stmt.setString(6, child.getCertificateNumber());
-        stmt.setDate(7, Date.valueOf(child.getIssueDate()));
-        stmt.setLong(8, child.getIssueDepartment().getOfficeId());
-        setParamsForAddress(stmt, 9, child);
-    }
-
-    private void setParamsForAdult(PreparedStatement stmt, int start, Adult adult) throws SQLException {
-        setParamsForPerson(stmt, start, adult);
-        stmt.setString(start + 4, adult.getPassportSeria());
-        stmt.setString(start + 5, adult.getPassportNumber());
-        stmt.setDate(start + 6, Date.valueOf(adult.getIssueDate()));
-        stmt.setLong(start + 7, adult.getIssueDepartment().getOfficeId());
-        setParamsForAddress(stmt, start + 8, adult);
-        stmt.setLong(start + 13, adult.getUniversity().getUniversityId());
-        stmt.setString(start + 14, adult.getStudentId());
-    }
-
-    private void setParamsForPerson(PreparedStatement stmt, int start, Person person) throws SQLException {
-        stmt.setString(start, person.getSurName());
-        stmt.setString(start + 1, person.getGivenName());
-        stmt.setString(start + 2, person.getPatronymic());
-        stmt.setDate(start + 3, Date.valueOf(person.getDateOfBirth()));
-    }
-
-    private void setParamsForAddress(PreparedStatement stmt, int start, Person person) throws SQLException {
-        Address h_address = person.getAddress();
-        stmt.setString(start, h_address.getPostCode());
-        stmt.setLong(start + 1, h_address.getStreet().getStreetCode());
-        stmt.setString(start + 2, h_address.getBuilding());
-        stmt.setString(start + 3, h_address.getExtension());
-        stmt.setString(start + 4, h_address.getApartment());
     }
 }
