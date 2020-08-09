@@ -22,12 +22,8 @@ public class DictionaryDaoImpl implements DictionaryDao {
     private static final String GET_AREA = "SELECT * " +
             "FROM jc_country_struct WHERE area_id LIKE ? AND area_id <> ?";
 
-    //TODO refactoring - make one method
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                Config.getProperty(Config.DB_URL),
-                Config.getProperty(Config.DB_LOGIN),
-                Config.getProperty(Config.DB_PASSWORD));
+        return ConnectionBuilder.getConnection();
     }
 
     public List<Street> findStreet(String pattern) throws DaoException {
