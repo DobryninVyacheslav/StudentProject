@@ -1,22 +1,44 @@
-package edu.javacourse.studentorder;
+package edu.javacourse.studentorder.dao;
 
-import edu.javacourse.studentorder.dao.StudentOrderDao;
-import edu.javacourse.studentorder.dao.StudentOrderDaoImpl;
 import edu.javacourse.studentorder.domain.*;
+import edu.javacourse.studentorder.exception.DaoException;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-public class SaveStudentOrder
-{
-    static long saveStudentOrder(StudentOrder studentOrder) {
-        long answer = 199;
-        System.out.println("saveStudentOrder");
+import static org.junit.Assert.*;
 
-        return answer;
+public class StudentOrderDaoImplTest {
+
+    @BeforeClass
+    public static void startUp() throws URISyntaxException, IOException, SQLException {
+        DbInit.startUp();
     }
 
-    public static StudentOrder buildStudentOrder(long id) {
+    @Test
+    public void saveStudentOrder() throws DaoException {
+        StudentOrder so = buildStudentOrder(10);
+        Long id = new StudentOrderDaoImpl().saveStudentOrder(so);
+    }
+
+    @Test(expected = DaoException.class)
+    public void saveStudentOrderError() throws DaoException {
+        StudentOrder so = buildStudentOrder(10);
+        so.getHusband().setSurName(null);
+        Long id = new StudentOrderDaoImpl().saveStudentOrder(so);
+    }
+
+    @Test
+    public void getStudentOrders() throws DaoException {
+        List<StudentOrder> list = new StudentOrderDaoImpl().getStudentOrders();
+    }
+
+    private StudentOrder buildStudentOrder(long id) {
         StudentOrder so = new StudentOrder();
         so.setStudentOrderId(id);
         so.setMarriageCertificateId("" + (123456000 + id));
