@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class StudentOrderDaoImplTest {
-
+ 
     @BeforeClass
     public static void startUp() throws URISyntaxException, IOException, SQLException {
         DbInit.startUp();

@@ -7,6 +7,8 @@ import edu.javacourse.studentorder.domain.Street;
 import edu.javacourse.studentorder.exception.DaoException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,12 +18,15 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
 public class DictionaryDaoImplTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DictionaryDaoImplTest.class);
 
     @BeforeClass
     public static void startUp() throws URISyntaxException, IOException, SQLException {
@@ -30,6 +35,9 @@ public class DictionaryDaoImplTest {
 
     @Test
     public void testStreet() throws DaoException {
+        LocalDateTime dateTime1 = LocalDateTime.now();
+        LocalDateTime dateTime2 = LocalDateTime.now();
+        LOG.info("TEST - {}, {}", dateTime1, dateTime2);
         List<Street> d = new DictionaryDaoImpl().findStreet("про");
         assertTrue(d.size() == 2);
     }
