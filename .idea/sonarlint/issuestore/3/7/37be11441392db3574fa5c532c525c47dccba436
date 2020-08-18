@@ -1,0 +1,21 @@
+
+a
+java:S1144Ï">Remove this unused private "getStudentOrdersTwoSelect" method.(Ê©™Âüÿÿÿÿ8•¨Ø÷¼.
+n
+java:S1192R"QDefine a constant instead of duplicating this literal "student_order_id" 4 times.(Õ–¶8ÿÂşõ¼.
+j
+java:S2095¶"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(Ë¼Ëûÿÿÿÿ8æâ ö¼.
+j
+java:S2095Õ"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(Ë¼Ëûÿÿÿÿ8Ûò·ö¼.
+v
+java:S2139È"XEither log this exception and handle it, or rethrow it with some contextual information.(É®£8»˜«¿.
+v
+java:S2139Ü"XEither log this exception and handle it, or rethrow it with some contextual information.(É®£8êƒ™«¿.
+W
+java:S1141U"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8œÿ˜Ìº.
+s	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©àò–ıÿÿÿÿ8™•‹ïº.
+u
+java:S2139q"XEither log this exception and handle it, or rethrow it with some contextual information.(É®£8Í¥Š«¿.
+O
+java:S1612£",Replace this lambda with a method reference.(”ˆíûÿÿÿÿ8Ûò·ö¼.
+^	java:S125©"<This block of commented-out lines of code should be removed.(„¡¤—ıÿÿÿÿ8•¨Ø÷¼.
