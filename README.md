@@ -15,6 +15,6 @@ Technologies currently used in the project:
 - JUnit 4
 - Git
 
-I am doing a project to gain additional knowledge required to write Enterprise applications.
+I am doing this project to gain additional knowledge required to write Enterprise applications.
 
 _Project in progress_ 😁
