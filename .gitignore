@@ -1,3 +1,7 @@
+<<<<<<< HEAD:.gitignore
+=======
+# Project exclude paths
+>>>>>>> master:StudentOrder/.gitignore
 .idea/
 /target/
 *.iml
