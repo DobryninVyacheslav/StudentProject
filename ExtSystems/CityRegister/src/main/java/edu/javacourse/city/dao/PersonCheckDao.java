@@ -4,10 +4,7 @@ import edu.javacourse.city.domian.PersonRequest;
 import edu.javacourse.city.domian.PersonResponse;
 import edu.javacourse.city.exception.PersonCheckException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PersonCheckDao {
 
@@ -16,20 +13,45 @@ public class PersonCheckDao {
             "inner join cr_person p on p.person_id = ap.person_id " +
             "inner join cr_address a on a.address_id = ap.address_id " +
             "where " +
-            "upper(p.sur_name) = upper(?) " +
+            "CURRENT_DATE >= ap.start_date and (CURRENT_DATE <= ap.end_date or ap.end_date is null) " +
+            "and upper(p.sur_name) = upper(?) " +
             "and upper(p.given_name) = upper(?) " +
             "and upper(p.patronymic) = upper(?) " +
             "and p.date_of_birth = ? " +
             "and a.street_code = ? " +
-            "and upper(a.building) = upper(?) " +
-            "and upper(extension) = upper(?) " +
-            "and upper(a.apartment) = upper(?)";
+            "and upper(a.building) = upper(?) ";
 
     public PersonResponse checkPerson(PersonRequest request) throws PersonCheckException {
         PersonResponse response = new PersonResponse();
+
+        String sql = SQL_REQUEST;
+        if (request.getExtension() != null) {
+            sql += "and upper(extension) = upper(?) ";
+        } else {
+            sql += "and extension is null ";
+        }
+        if (request.getApartment() != null) {
+            sql += "and upper(a.apartment) = upper(?)";
+        } else {
+            sql += "and a.apartment is null";
+        }
+
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_REQUEST);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            int count = 1;
+            stmt.setString(count++, request.getSurName());
+            stmt.setString(count++, request.getGivenName());
+            stmt.setString(count++, request.getPatronymic());
+            stmt.setDate(count++, Date.valueOf(request.getDateOfBirth()));
+            stmt.setInt(count++, request.getStreetCode());
+            stmt.setString(count++, request.getBuilding());
+            if (request.getExtension() != null) {
+                stmt.setString(count++, request.getExtension());
+            }
+            if (request.getApartment() != null) {
+                stmt.setString(count, request.getApartment());
+            }
+            ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 response.setRegistered(true);
                 response.setTemporal(resultSet.getBoolean("temporal"));
@@ -40,7 +62,8 @@ public class PersonCheckDao {
         return response;
     }
 
-    private Connection getConnection() {
-        return null;
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:postgresql://localhost/city_register",
+                "postgres", "postgres");
     }
 }
