@@ -14,6 +14,8 @@ Technologies currently used in the project:
 - slf4j and log4j
 - JUnit 4
 - Git
+- Multithreading
+- Sockets
 
 I am doing this project to gain additional knowledge required to write Enterprise applications.
 
