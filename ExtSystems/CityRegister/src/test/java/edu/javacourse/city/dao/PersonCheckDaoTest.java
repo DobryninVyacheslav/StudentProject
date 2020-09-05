@@ -3,6 +3,7 @@ package edu.javacourse.city.dao;
 import edu.javacourse.city.domian.PersonRequest;
 import edu.javacourse.city.domian.PersonResponse;
 import edu.javacourse.city.exception.PersonCheckException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import static org.junit.Assert.*;
 public class PersonCheckDaoTest {
 
     @Test
+    @Ignore
     public void checkPerson() throws PersonCheckException {
         PersonRequest pr = new PersonRequest();
         pr.setSurName("Васильев");
@@ -30,6 +32,7 @@ public class PersonCheckDaoTest {
     }
 
     @Test
+    @Ignore
     public void checkPerson2() throws PersonCheckException {
         PersonRequest pr = new PersonRequest();
         pr.setSurName("Васильева");
