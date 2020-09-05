@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 
 public class Client {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         for (int i = 0; i < 8; i++) {
             SimpleClient client = new SimpleClient(i);
             client.start();
