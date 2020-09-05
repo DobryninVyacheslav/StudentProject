@@ -21,6 +21,14 @@ public class PersonCheckDao {
             "and a.street_code = ? " +
             "and upper(a.building) = upper(?) ";
 
+    public PersonCheckDao() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public PersonResponse checkPerson(PersonRequest request) throws PersonCheckException {
         PersonResponse response = new PersonResponse();
 
