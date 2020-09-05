@@ -13,7 +13,6 @@ import static org.junit.Assert.*;
 public class PersonCheckDaoTest {
 
     @Test
-    @Ignore
     public void checkPerson() throws PersonCheckException {
         PersonRequest pr = new PersonRequest();
         pr.setSurName("Васильев");
@@ -32,7 +31,6 @@ public class PersonCheckDaoTest {
     }
 
     @Test
-    @Ignore
     public void checkPerson2() throws PersonCheckException {
         PersonRequest pr = new PersonRequest();
         pr.setSurName("Васильева");
