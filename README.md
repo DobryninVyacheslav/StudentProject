@@ -17,7 +17,7 @@ Technologies currently used in the project:
 - Multithreading
 - Sockets
 - Apache Tomcat
-
+- Jersey
 
 I am doing this project to gain additional knowledge required to write Enterprise applications.
 
