@@ -79,6 +79,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <outputDirectory>/home/slava/Common/Java/apache-tomcat-9.0.37/webapps</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
