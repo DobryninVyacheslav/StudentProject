@@ -93,7 +93,7 @@ INSERT INTO cr_address_person (address_id, person_id, start_date, end_date, temp
 VALUES (1, 1, '2014-10-12', null, false);
 
 INSERT INTO cr_address_person (address_id, person_id, start_date, end_date)
-VALUES (2, 2, '2014-10-12', null);
+VALUES (1, 2, '2014-10-12', null);
 
 INSERT INTO cr_address_person (address_id, person_id, start_date, end_date)
 VALUES (1, 3, '2016-02-05', null);
