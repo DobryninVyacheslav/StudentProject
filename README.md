@@ -18,6 +18,7 @@ Technologies currently used in the project:
 - Sockets
 - Apache Tomcat
 - Jersey
+- Hibernate
 
 I am doing this project to gain additional knowledge required to write Enterprise applications.
 
