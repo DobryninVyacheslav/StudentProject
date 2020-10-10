@@ -9,7 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 @Service("controller")
+@Path("/mc")
 public class MarriageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MarriageController.class);
@@ -21,8 +27,10 @@ public class MarriageController {
         this.marriageManager = marriageManager;
     }
 
-    public MarriageResponse findMarriageCertificate(MarriageRequest request) {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public MarriageResponse findMarriageCertificate() {
         LOG.info("findMarriageCertificate called");
-        return marriageManager.findMarriageCertificate(request);
+        return marriageManager.findMarriageCertificate(null);
     }
 }
