@@ -38,7 +38,15 @@ public class MarriageManager {
         marriageDao.saveAndFlush(marriageCertificate);
 
 //        marriageDao.findAll();
-        marriageDao.findById(1L);
+//        marriageDao.findById(1L);
+        List<MarriageCertificate> list = marriageDao.findByNumber("12345");
+        list.forEach(m -> LOG.info("MC:{}", m.getMarriageCertificateId()));
+        LOG.info("------------ >>>>>>");
+        List<MarriageCertificate> list2 = marriageDao.findByNum("98765");
+        list2.forEach(m -> LOG.info("MC:{}", m.getMarriageCertificateId()));
+        LOG.info("------------ >>>>>>");
+        List<MarriageCertificate> list3 = marriageDao.findSomething("01928");
+        list3.forEach(m -> LOG.info("MC:{}", m.getMarriageCertificateId()));
 
         return new MarriageResponse();
     }
@@ -46,7 +54,7 @@ public class MarriageManager {
     private MarriageCertificate getMarriageCertificate() {
         MarriageCertificate marriageCertificate = new MarriageCertificate();
         marriageCertificate.setIssueDate(LocalDate.now());
-        marriageCertificate.setNumber("12345");
+        marriageCertificate.setNumber("01928");
         marriageCertificate.setActive(true);
 
         List<Person> persons = personDao.findPersons();
