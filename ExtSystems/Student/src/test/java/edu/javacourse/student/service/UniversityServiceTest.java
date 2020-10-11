@@ -28,10 +28,30 @@ public class UniversityServiceTest {
     }
 
     @Test
+    public void findFullUniversities() {
+        List<University> universities = service.findFullUniversities();
+        System.out.println("OK");
+        universities.forEach(u -> System.out.println(
+                u.getUniversityId() + ":" + u.getUniversityName() + ":" + u.getFaculties().size()));
+    }
+
+    @Test
+    public void findUniversity() {
+        University university = service.findUniversity(1L);
+        System.out.println(university.getUniversityName() + ":" + university.getFaculties().size());
+    }
+
+    @Test
     public void findFaculties() {
         List<Faculty> faculties = service.findFaculties();
         System.out.println("OK");
         faculties.forEach(f -> System.out.println(
                 f.getFacultyId() + ":" + f.getUniversity().getUniversityName()));
+    }
+
+    @Test
+    public void findFaculty() {
+        Faculty faculty = service.findFaculty(1L);
+        System.out.println(faculty.getUniversity().getUniversityName());
     }
 }
