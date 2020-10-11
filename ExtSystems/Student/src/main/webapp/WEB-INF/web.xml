@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>JerseyServlet</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <servlet-class>org.glassfish.jersey.edu.javacourse.student.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>edu.javacourse.student</param-value>
