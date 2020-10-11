@@ -1,4 +1,4 @@
-package edu.javacourse.student.service.dao;
+package edu.javacourse.student.dao;
 
 import edu.javacourse.student.domain.Student;
 import org.springframework.data.jpa.repository.JpaRepository;

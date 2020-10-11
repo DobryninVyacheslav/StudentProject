@@ -1,14 +1,15 @@
 package edu.javacourse.student.service;
 
+import edu.javacourse.student.dao.StudentRepository;
 import edu.javacourse.student.domain.Student;
 import edu.javacourse.student.domain.StudentDocument;
-import edu.javacourse.student.service.dao.StudentRepository;
 import edu.javacourse.student.view.StudentRequest;
 import edu.javacourse.student.view.StudentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,7 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Transactional
     public List<StudentResponse> getStudentInfo(StudentRequest request) {
         List<Student> student = studentRepository.findStudent(request.getLastName(),
                 request.getFirstName(),
